@@ -3,14 +3,6 @@ import std.string;
 import std.algorithm.iteration : splitter;
 import std.algorithm.sorting : schwartzSort;
 
-char mytolower(char c) {
-  mixin("char lc = 'a' - 'A';");
-  if (c < 'A' || c > 'Z') {
-    return c;
-  }
-  return cast(char)(c + lc);
-}
-
 void main() {
   int[string] freq;
   char[] buf;
@@ -18,7 +10,9 @@ void main() {
   while (stdin.readln(buf) && !stdin.eof()) {
     foreach (word; splitter(buf)) {
       for (ptrdiff_t idx = 0; idx < word.length; idx++) {
-        word[idx] = mytolower(word[idx]);
+        if (word[idx]-'A' < 26) {
+          word[idx] = word[idx]|32;
+        }
       }
       if (auto ptr = (word in freq)) {
         ++*ptr;
